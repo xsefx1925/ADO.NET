@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.35425.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADO.NET", "ADO.NET.csproj", "{B1A292CA-DCB5-4264-B94A-C0E0B833655E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADO.NET", "ADO.NET\ADO.NET.csproj", "{B1A292CA-DCB5-4264-B94A-C0E0B833655E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesConnector", "..\MoviesConnector\MoviesConnector.csproj", "{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy", "Academy\Academy.csproj", "{39866CD8-8C5F-422A-A715-50DAFF5907DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy", "..\Academy\Academy.csproj", "{39866CD8-8C5F-422A-A715-50DAFF5907DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesConnector", "MoviesConnector\MoviesConnector.csproj", "{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{B1A292CA-DCB5-4264-B94A-C0E0B833655E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1A292CA-DCB5-4264-B94A-C0E0B833655E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1A292CA-DCB5-4264-B94A-C0E0B833655E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39866CD8-8C5F-422A-A715-50DAFF5907DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39866CD8-8C5F-422A-A715-50DAFF5907DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39866CD8-8C5F-422A-A715-50DAFF5907DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39866CD8-8C5F-422A-A715-50DAFF5907DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65F3AEE1-A450-4890-B1BF-B107E4D1E02A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
