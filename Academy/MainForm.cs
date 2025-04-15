@@ -25,80 +25,56 @@ namespace Academy
 					"direction = direction_id AND [group] = group_id",
 					"group_id, group_name, direction_name"
 					),
-				new Query("*", "Directions"),
+				new Query
+					(
+					@"  direction_name,
+		  COUNT(DISTINCT group_id) AS N'Количество групп',
+		  COUNT(DISTINCT stud_id) AS N'Количество студентов'",
+					@"Students
+JOIN      Groups     ON ([group] = group_id)
+RIGHT JOIN      Directions ON (direction = direction_id)",//tables
+"",//WHERE
+"direction_name"
+					),
 				new Query("*", "Disciplines"),
-				new Query("*", "Teachers"),
-
-				//сюда 1 пункт
-				new Query(
-                        	"direction_name, COUNT(DISTINCT group_id) AS group_count, COUNT(stud_id) AS student_count",
-	                        "Directions LEFT JOIN Groups ON Directions.direction_id = Groups.direction LEFT JOIN Students ON Groups.group_id = Students.[group]",
-	                        "",
-	                        "direction_name"
-					//
-                          ),
+				new Query("*", "Teachers"),	
 			};
 
-
-
-
 		DataGridView[] tables;
-		//	string[] status_messages = new string[]
-		//	{
-		//		"Количество студентов: ",
-		//	"Количество групп: ",
-		//	"Количество направлений: ",
-		//	"Количество дисциплин: ",
-		//		"Количество преподавателей: ",
-		//	};
-		//5
-		string[] status_messages = new string[]
-	{
-	"Количество студентов: ",
-	"Количество групп: ",
-	"Количество направлений: ",
-	"Количество дисциплин: ",
-	"Количество преподавателей: ",
-	"Статистика направлений: " // Новое сообщение
-	};
-//
+			string[] status_messages = new string[]
+			{
+			"Количество студентов: ",
+			"Количество групп: ",
+			"Количество направлений: ",
+			"Количество дисциплин: ",
+				"Количество преподавателей: ",
+		};
 
-
-
-
-
-
-
+		/// /////////////////////////////////////////////////////////////////////////////////////
+	public	Dictionary<string, int> d_directions;
+		public Dictionary<string, int> d_groups;
 		public MainForm()
 		{
 			InitializeComponent();
 
-			//	tables = new DataGridView[]
-			//	{
-			//		dgvStudents,
-			//		dgvGroups,
-			//		dgvDirections,
-			//		dgvDisciplines,
-			//		dgvTeachers
-			//	};
-			//4
-			tables = new DataGridView[]
-	               {
+				tables = new DataGridView[]
+			{
 					dgvStudents,
-					dgvGroups,
+				dgvGroups,
 					dgvDirections,
 					dgvDisciplines,
-					dgvTeachers,
-					dgvDirectionStats // Новая таблица
-				   };
-
-
-
-
-
-			connector = new Connector(ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString);
-			dgvStudents.DataSource = connector.Select("*", "Students");
+					dgvTeachers
+				};
+			
+		connector = new Connector(ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString);
+		dgvStudents.DataSource = connector.Select("*", "Students");
 			statusStripCountLabel.Text = $"Количество студентов: {dgvStudents.RowCount - 1}";
+
+			d_directions = connector.GetDictionary("Directions");
+			d_groups = connector.GetDictionary("Groups");
+			cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key.ToString()).ToArray());
+			cbStudentsDirection.Items.AddRange(d_directions.Select(d => d.Key.ToString()).ToArray());
+			cbGroupsDirection.Items.AddRange(d_directions.Select(d => d.Key.ToString()).ToArray());
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -111,21 +87,39 @@ namespace Academy
 
 		}
 
-		//private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
-		//{
-		//	int i = tabControl.SelectedIndex;
-		//	Query query = queries[i];
-		//	tables[i].DataSource = connector.Select(queries[i].Columns, queries[i].Tables, queries[i].Condition, queries[i].GroupBy);
-		//	statusStripCountLabel.Text = $"{status_messages[i]} {tables[i].RowCount - 1}";
-		//}
-		//6
-		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+		void LoadTab(Query query = null)
+
 		{
 			int i = tabControl.SelectedIndex;
-			Query query = queries[i];
+			if (query == null) query = queries[i];
 			tables[i].DataSource = connector.Select(query.Columns, query.Tables, query.Condition, query.GroupBy);
 			statusStripCountLabel.Text = $"{status_messages[i]} {tables[i].RowCount - 1}";
 		}
-		//
+		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			//int i = tabControl.SelectedIndex;
+			LoadTab();
+		}
+
+		private void cbGroupsDirection_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			int i = tabControl.SelectedIndex;
+			Query query = new Query(queries[1]);
+			Console.WriteLine(query.Condition);
+
+			string tab_name = (sender as ComboBox).Name;
+			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));
+			Console.WriteLine(field_name);
+			//Dictionary<string, int> sourse = 
+			string member_name = $"d_{field_name.ToLower()}s";
+			Console.WriteLine(member_name == nameof(d_directions));
+			Dictionary<string, int> source = this.GetType().GetField(member_name).GetValue(this) as Dictionary<string, int>;
+			//Console.WriteLine(this.GetType().GetField(member_name).GetValue(this));
+			//Console.WriteLine(this.GetType());
+			query.Condition += $" AND {field_name.ToLower()} = {source[(sender as ComboBox).SelectedItem.ToString()]}";
+			LoadTab( query);
+			Console.WriteLine((sender as ComboBox).Name);
+			Console.WriteLine(e);
+		}
 	}
 }
