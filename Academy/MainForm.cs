@@ -14,6 +14,15 @@ namespace Academy
 {
 	public partial class MainForm : Form
 	{
+		//2 пункт
+		private Dictionary<string, int> d_directions; // Приватное поле
+		private Dictionary<string, int> d_groups;     // Приватное поле
+													  //
+													  // Публичные свойства только для чтения
+		 //3 пункт
+		public Dictionary<string, int> Directions => new Dictionary<string, int>(d_directions);
+		public Dictionary<string, int> Groups => new Dictionary<string, int>(d_groups);
+		//
 		Connector connector;
 
 		Query[] queries = new Query[]
@@ -51,8 +60,8 @@ RIGHT JOIN      Directions ON (direction = direction_id)",//tables
 		};
 
 		/// /////////////////////////////////////////////////////////////////////////////////////
-	public	Dictionary<string, int> d_directions;
-		public Dictionary<string, int> d_groups;
+	//public	Dictionary<string, int> d_directions;
+	//	public Dictionary<string, int> d_groups;
 		public MainForm()
 		{
 			InitializeComponent();
@@ -76,7 +85,7 @@ RIGHT JOIN      Directions ON (direction = direction_id)",//tables
 			cbStudentsDirection.Items.AddRange(d_directions.Select(d => d.Key.ToString()).ToArray());
 			cbGroupsDirection.Items.AddRange(d_directions.Select(d => d.Key.ToString()).ToArray());
 		}
-
+	//до сюда
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 
@@ -100,29 +109,70 @@ RIGHT JOIN      Directions ON (direction = direction_id)",//tables
 			//int i = tabControl.SelectedIndex;
 			LoadTab();
 		}
+		/*private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			int i = tabControl.SelectedIndex;
+			Query query = new Query(queries[1]);
+			Console.WriteLine(query.Condition);
+			string tab_name = (sender as ComboBox).Name;
+			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));
+			Console.WriteLine(field_name);
 
+			string member_name = $"d_{field_name.ToLower()}s";
+			Console.WriteLine(member_name == nameof(d_directions));
+
+			// Используем свойства Directions и Groups
+			Dictionary<string, int> source = member_name == nameof(d_directions) ? Directions : Groups;
+
+			if (query.Condition != "") query.Condition += " AND";
+			query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}";
+			LoadTab(query);
+			Console.WriteLine((sender as ComboBox).Name);
+			Console.WriteLine(e);
+		}
+				private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+				{
+					int i = tabControl.SelectedIndex;
+					Query query = new Query(queries[1]);
+					Console.WriteLine(query.Condition);
+
+					string tab_name = (sender as ComboBox).Name;
+					string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));// + "_id";
+					Console.WriteLine(field_name);
+					//Dictionary<string, int> sourse = 
+					string member_name = $"d_{field_name.ToLower()}s";
+					Console.WriteLine(member_name == nameof(d_directions));
+
+					//Dictionary<string, int> source = this.GetType().GetField(member_name).GetValue(this) as Dictionary<string, int>;
+					//Console.WriteLine(this.GetType().GetField(member_name).GetValue(this));
+					//Console.WriteLine(this.GetType());
+					if(query.Condition != "")query.Condition += " AND";
+					query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}";
+					LoadTab( query);
+					Console.WriteLine((sender as ComboBox).Name);
+					Console.WriteLine(e);
+				}
+		*/
 		private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			int i = tabControl.SelectedIndex;
 			Query query = new Query(queries[1]);
 			Console.WriteLine(query.Condition);
-
 			string tab_name = (sender as ComboBox).Name;
-			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));// + "_id";
+			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));
 			Console.WriteLine(field_name);
-			//Dictionary<string, int> sourse = 
+
 			string member_name = $"d_{field_name.ToLower()}s";
 			Console.WriteLine(member_name == nameof(d_directions));
-			Dictionary<string, int> source = this.GetType().GetField(member_name).GetValue(this) as Dictionary<string, int>;
-			//Console.WriteLine(this.GetType().GetField(member_name).GetValue(this));
-			//Console.WriteLine(this.GetType());
-			if(query.Condition != "")query.Condition += " AND";
+
+			// Используем свойства Directions и Groups
+			Dictionary<string, int> source = member_name == nameof(d_directions) ? Directions : Groups;
+
+			if (query.Condition != "") query.Condition += " AND";
 			query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}";
-			LoadTab( query);
+			LoadTab(query);
 			Console.WriteLine((sender as ComboBox).Name);
 			Console.WriteLine(e);
 		}
-
-	
 	}
 }
